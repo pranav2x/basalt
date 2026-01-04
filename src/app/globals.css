@@ -1,8 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 @layer base {
   :root {
+    /* Linear-Grade Chromatic Palette */
+    --canvas-base: #08090A;
+    --surface-1: #131416;
+    --surface-2: #1C1D21;
+    --surface-3: #232428;
+    
+    /* Indigo Accent System */
+    --indigo-500: #5E6AD2;
+    --indigo-400: #8E96E8;
+    --indigo-300: #B4BAED;
+    
+    /* Text Hierarchy (Alpha-based) */
+    --text-primary: rgba(255, 255, 255, 0.95);
+    --text-secondary: rgba(255, 255, 255, 0.6);
+    --text-tertiary: rgba(255, 255, 255, 0.4);
+    
+    /* Glass Material System */
+    --glass-bg: rgba(20, 20, 25, 0.6);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --glass-rim: rgba(255, 255, 255, 0.08);
+    
+    /* Elevation Shadows */
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+    
+    /* Glow Effects */
+    --glow-sm: 0 0 8px rgba(94, 106, 210, 0.3);
+    --glow-md: 0 0 16px rgba(94, 106, 210, 0.4);
+    --glow-lg: 0 0 32px rgba(94, 106, 210, 0.5);
+    
+    /* 8px Spatial System */
+    --spacing-xs: 8px;
+    --spacing-sm: 16px;
+    --spacing-md: 24px;
+    --spacing-lg: 32px;
+    --spacing-xl: 48px;
+    
+    /* Legacy shadcn tokens (for compatibility) */
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     --card: 240 10% 3.9%;
@@ -24,48 +64,142 @@
     --ring: 240 4.9% 83.9%;
     --radius: 0.5rem;
   }
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-  }
+  
   * {
     @apply border-border;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+  
   body {
     @apply bg-background text-foreground;
+    background-color: var(--canvas-base);
   }
 }
+
 @layer components {
-  .react-flow {
-    @apply bg-[#09090b];
+  /* Premium Glassmorphism Base */
+  .glass-element {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-border);
+    box-shadow: 
+      inset 0 1px 0 0 var(--glass-rim),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+      var(--shadow-md);
+    background-blend-mode: overlay;
   }
+  
+  /* React Flow Customizations */
+  .react-flow {
+    background-color: var(--canvas-base);
+  }
+  
+  .react-flow__background {
+    background-color: var(--canvas-base);
+  }
+  
   .react-flow__controls {
     @apply flex flex-col gap-2;
   }
+  
   .react-flow__controls-button {
-    @apply bg-[#18181b] border border-[#27272a] rounded-md p-2 transition-colors;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 8px;
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
   }
+  
   .react-flow__controls-button:hover {
-    @apply bg-[#27272a];
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.15);
+    color: var(--text-primary);
+    transform: scale(1.05);
   }
+  
   .react-flow__controls-button svg {
-    @apply fill-white;
+    fill: currentColor;
+  }
+  
+  /* Custom Focus Rings */
+  *:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px var(--indigo-500);
+  }
+  
+  button:focus-visible {
+    outline: none;
+    box-shadow: 
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.15),
+      0 0 0 2px var(--indigo-500);
+  }
+  
+  /* Keyboard Hint Styling */
+  .kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    font-size: 11px;
+    font-family: 'SF Mono', 'Monaco', monospace;
+    color: var(--text-secondary);
+  }
+}
+
+@layer utilities {
+  /* GPU Acceleration */
+  .gpu-accelerate {
+    transform: translateZ(0);
+  }
+  
+  .will-change-transform {
+    will-change: transform;
+  }
+  
+  .will-change-transform-shadow {
+    will-change: transform, box-shadow;
+  }
+}
+
+/* Premium Animations */
+@keyframes rotate-glow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-status {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+@keyframes dash-flow {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Backdrop Filter Fallback */
+@supports not (backdrop-filter: blur(20px)) {
+  .glass-element {
+    background: rgba(20, 20, 25, 0.95);
   }
 }

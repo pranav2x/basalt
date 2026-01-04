@@ -6,28 +6,38 @@ import ReactFlow, {
   BackgroundVariant,
   ConnectionLineType,
   NodeTypes,
+  EdgeTypes,
+  useReactFlow,
 } from 'reactflow';
-import { Maximize, Sparkles, Image, Wand2 } from 'lucide-react';
+import { Image } from 'lucide-react';
 import { useCanvasStore } from '@/store/useCanvasStore';
+import PremiumNode from '@/components/nodes/PremiumNode';
+import PremiumEdge from './PremiumEdge';
+import CanvasControls from './CanvasControls';
+import PremiumMinimap from './PremiumMinimap';
 import 'reactflow/dist/style.css';
 
 const nodeTypes: NodeTypes = {
-  // Add custom node types here later
+  premium: PremiumNode,
+};
+
+const edgeTypes: EdgeTypes = {
+  premium: PremiumEdge,
 };
 
 export default function BasaltCanvas() {
   const { nodes, edges, onNodesChange, onEdgesChange, onConnect } = useCanvasStore();
   const [commandInput, setCommandInput] = useState('');
   const [isCreating, setIsCreating] = useState(false);
+  const [zoom, setZoom] = useState(100);
 
   const connectionLineStyle = {
-    stroke: '#fff',
-    strokeWidth: 2,
+    stroke: 'url(#connection-gradient)',
+    strokeWidth: 2.5,
   };
 
   const defaultEdgeOptions = {
-    style: { stroke: '#fff', strokeWidth: 2 },
-    type: 'smoothstep',
+    type: 'premium',
     animated: false,
   };
 
@@ -58,6 +68,17 @@ export default function BasaltCanvas() {
 
   return (
     <div className="relative w-full h-full">
+      {/* Atmospheric Background Gradients */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 30%, rgba(94, 106, 210, 0.04) 0%, transparent 50%),
+            radial-gradient(circle at 80% 70%, rgba(142, 150, 232, 0.03) 0%, transparent 50%)
+          `,
+        }}
+      />
+      
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -65,128 +86,149 @@ export default function BasaltCanvas() {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeTypes}
-        connectionLineType={ConnectionLineType.SmoothStep}
+        edgeTypes={edgeTypes}
+        connectionLineType={ConnectionLineType.Bezier}
         connectionLineStyle={connectionLineStyle}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
-        className="bg-[#0a0a0a]"
+        className="bg-canvas-base"
         proOptions={{ hideAttribution: true }}
+        onMove={(_, viewport) => {
+          setZoom(viewport.zoom * 100);
+        }}
       >
+        {/* Gradient Definition for Connection Line */}
+        <svg style={{ position: 'absolute', width: 0, height: 0 }}>
+          <defs>
+            <linearGradient id="connection-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#5E6AD2" stopOpacity="0.8" />
+              <stop offset="100%" stopColor="#8E96E8" stopOpacity="0.6" />
+            </linearGradient>
+          </defs>
+        </svg>
+        
+        {/* Premium Dot Grid Background */}
         <Background
-          color="#1a1a1a"
+          color="rgba(255, 255, 255, 0.12)"
           variant={BackgroundVariant.Dots}
           gap={24}
-          size={1}
+          size={1.5}
+          style={{
+            backgroundColor: 'var(--canvas-base)',
+          }}
         />
+        
+        {/* Premium Minimap */}
+        <PremiumMinimap />
       </ReactFlow>
+      
+      {/* Canvas Controls */}
+      <CanvasControls zoom={zoom} />
 
       {/* Center Empty State */}
       {nodes.length === 0 && !isCreating && (
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10">
-          <p className="text-sm text-zinc-600">Enter a prompt below or drag & drop your media</p>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center z-10 pointer-events-none">
+          <p className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
+            Enter a prompt below or drag & drop your media
+          </p>
         </div>
       )}
 
-      {/* Toolbar Top Right */}
-      <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
-        <button className="p-2 bg-zinc-900/50 hover:bg-zinc-900/70 border border-zinc-800/50 rounded-lg transition-colors">
-          <Maximize className="w-4 h-4 text-zinc-400" />
-        </button>
-        <button className="p-2 bg-zinc-900/50 hover:bg-zinc-900/70 border border-zinc-800/50 rounded-lg transition-colors">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-zinc-400">
-            <rect x="3" y="3" width="4" height="4" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
-            <rect x="9" y="3" width="4" height="4" rx="0.5" stroke="currentColor" strokeWidth="1.5"/>
-          </svg>
-        </button>
-        <button className="p-2 bg-zinc-900/50 hover:bg-zinc-900/70 border border-zinc-800/50 rounded-lg transition-colors">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-zinc-400">
-            <circle cx="8" cy="8" r="2" stroke="currentColor" strokeWidth="1.5"/>
-            <path d="M2 8h2M12 8h2M8 2v2M8 12v2" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-          </svg>
-        </button>
-      </div>
-
-      {/* Bottom Left Help Button */}
-      <div className="absolute bottom-6 left-6 z-10">
-        <button className="w-10 h-10 bg-zinc-900/80 backdrop-blur-md hover:bg-zinc-900 rounded-full flex items-center justify-center transition-colors">
-          <span className="text-sm text-white font-semibold">?</span>
-        </button>
-      </div>
-
-      {/* Bottom Right Transform & Zoom */}
-      <div className="absolute bottom-6 right-6 z-10 flex items-center gap-2">
-        <span className="text-xs text-zinc-400">Transform</span>
-        <span className="text-xs text-zinc-400">100%</span>
-      </div>
-
-      {/* Bottom Command Bar */}
-      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-full max-w-2xl px-4">
+      {/* Premium Command Palette */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 w-full max-w-2xl px-4">
         <form onSubmit={handleCommandSubmit}>
-          <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/40 rounded-xl shadow-2xl overflow-hidden">
+          <div 
+            className="glass-element"
+            style={{
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: 'inset 0 1px 0 0 rgba(255, 255, 255, 0.12), 0 16px 64px rgba(0, 0, 0, 0.6)',
+            }}
+          >
             {/* Input Area */}
             <div className="flex items-start gap-3 px-4 py-3">
               <button
                 type="button"
-                className="mt-1 p-1.5 hover:bg-zinc-800/50 rounded transition-colors flex-shrink-0"
+                className="mt-1 p-1.5 hover:bg-white/5 rounded transition-colors flex-shrink-0"
               >
-                <Image className="w-4 h-4 text-zinc-500" />
+                <Image className="w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />
               </button>
               
               {isCreating ? (
                 <div className="flex items-center gap-3 flex-1 py-1">
                   <div className="flex gap-1">
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <span className="w-1.5 h-1.5 bg-white rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--text-primary)', animationDelay: '0ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--text-primary)', animationDelay: '150ms' }} />
+                    <span className="w-1.5 h-1.5 rounded-full animate-bounce" style={{ background: 'var(--text-primary)', animationDelay: '300ms' }} />
                   </div>
-                  <span className="text-sm text-zinc-500">Creating...</span>
+                  <span className="text-sm" style={{ color: 'var(--text-secondary)' }}>Creating...</span>
                 </div>
               ) : (
                 <textarea
                   id="command-input"
                   value={commandInput}
                   onChange={(e) => setCommandInput(e.target.value)}
-                  placeholder="Enter a prompt below or drag & drop your media"
+                  placeholder="Search or enter a command..."
                   rows={1}
-                  className="flex-1 bg-transparent text-white text-sm placeholder:text-zinc-600 outline-none resize-none py-1"
-                  style={{ minHeight: '24px', maxHeight: '120px' }}
+                  className="flex-1 bg-transparent outline-none resize-none py-1"
+                  style={{ 
+                    minHeight: '24px', 
+                    maxHeight: '120px',
+                    fontSize: '15px',
+                    color: 'var(--text-primary)',
+                    fontWeight: 400,
+                    letterSpacing: '-0.01em',
+                  }}
                 />
               )}
             </div>
 
             {/* Bottom Controls Row */}
-            <div className="border-t border-zinc-800/40 px-4 py-2.5 flex items-center justify-between">
+            <div 
+              className="px-4 py-2.5 flex items-center justify-between"
+              style={{
+                borderTop: '1px solid rgba(255, 255, 255, 0.06)',
+              }}
+            >
               <div className="flex items-center gap-2">
-                {/* Aspect Ratio Button */}
-                <button
-                  type="button"
-                  className="px-2.5 py-1 text-xs text-zinc-400 hover:text-white transition-colors"
-                >
-                  4:3
-                </button>
-
-                {/* Model Dropdown */}
-                <button
-                  type="button"
-                  className="px-2.5 py-1 text-xs text-zinc-400 hover:text-white transition-colors"
-                >
-                  Model
-                </button>
-
-                {/* More Options */}
-                <button
-                  type="button"
-                  className="px-2 py-1 text-xs text-zinc-400 hover:text-white transition-colors"
-                >
-                  ...
-                </button>
+                {/* Keyboard Hint */}
+                <div className="flex items-center gap-1.5 text-xs" style={{ color: 'var(--text-tertiary)' }}>
+                  <span>Press</span>
+                  <span className="kbd">⌘</span>
+                  <span className="kbd">K</span>
+                  <span>to toggle</span>
+                </div>
               </div>
 
               {/* Send Button */}
               <button
                 type="submit"
                 disabled={!commandInput.trim() || isCreating}
-                className="w-7 h-7 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 disabled:cursor-not-allowed rounded-full flex items-center justify-center transition-colors"
+                style={{
+                  width: '28px',
+                  height: '28px',
+                  background: !commandInput.trim() || isCreating 
+                    ? 'rgba(94, 106, 210, 0.3)' 
+                    : 'var(--indigo-500)',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  transition: 'all 0.2s ease',
+                  cursor: !commandInput.trim() || isCreating ? 'not-allowed' : 'pointer',
+                }}
+                onMouseEnter={(e) => {
+                  if (commandInput.trim() && !isCreating) {
+                    e.currentTarget.style.background = 'var(--indigo-400)';
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = !commandInput.trim() || isCreating 
+                    ? 'rgba(94, 106, 210, 0.3)' 
+                    : 'var(--indigo-500)';
+                  e.currentTarget.style.transform = 'scale(1)';
+                }}
               >
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
                   <path d="M8 3v10M8 3l3 3M8 3L5 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>

@@ -10,7 +10,16 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="h-screen w-screen overflow-hidden bg-[#0a0a0a]">
+    <div 
+      className="h-screen w-screen overflow-hidden"
+      style={{ 
+        backgroundColor: 'var(--canvas-base)',
+        backgroundImage: `
+          radial-gradient(circle at 10% 20%, rgba(94, 106, 210, 0.03) 0%, transparent 50%),
+          radial-gradient(circle at 90% 80%, rgba(142, 150, 232, 0.02) 0%, transparent 50%)
+        `,
+      }}
+    >
       {/* CSS Grid Layout */}
       <div className="h-full grid grid-rows-[60px_1fr]">
         {/* Top Bar */}
@@ -22,7 +31,10 @@ export function AppShell({ children }: AppShellProps) {
           <LeftSidebar />
 
           {/* Main Canvas Area */}
-          <main className="relative overflow-hidden bg-[#0a0a0a]">
+          <main 
+            className="relative overflow-hidden" 
+            style={{ backgroundColor: 'var(--canvas-base)' }}
+          >
             {children}
           </main>
 

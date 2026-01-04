@@ -49,12 +49,51 @@ const config: Config = {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
+  			},
+  			// Premium Canvas Palette
+  			canvas: {
+  				base: 'var(--canvas-base)',
+  				surface1: 'var(--surface-1)',
+  				surface2: 'var(--surface-2)',
+  				surface3: 'var(--surface-3)',
+  			},
+  			indigo: {
+  				300: 'var(--indigo-300)',
+  				400: 'var(--indigo-400)',
+  				500: 'var(--indigo-500)',
+  			},
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
-  			sm: 'calc(var(--radius) - 4px)'
+  			sm: 'calc(var(--radius) - 4px)',
+  			'premium': '14px',
+  		},
+  		spacing: {
+  			'xs': 'var(--spacing-xs)',
+  			'sm': 'var(--spacing-sm)',
+  			'md': 'var(--spacing-md)',
+  			'lg': 'var(--spacing-lg)',
+  			'xl': 'var(--spacing-xl)',
+  		},
+  		boxShadow: {
+  			'sm': 'var(--shadow-sm)',
+  			'md': 'var(--shadow-md)',
+  			'lg': 'var(--shadow-lg)',
+  			'glow-sm': 'var(--glow-sm)',
+  			'glow-md': 'var(--glow-md)',
+  			'glow-lg': 'var(--glow-lg)',
+  		},
+  		animation: {
+  			'rotate-glow': 'rotate-glow 8s linear infinite',
+  			'pulse-status': 'pulse-status 2s ease-in-out infinite',
+  			'dash-flow': 'dash-flow 20s linear infinite',
+  		},
+  		backdropBlur: {
+  			'premium': '20px',
+  		},
+  		backdropSaturate: {
+  			'premium': '180%',
   		}
   	}
   },
