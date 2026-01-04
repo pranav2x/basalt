@@ -69,7 +69,7 @@ export default function BasaltCanvas() {
         connectionLineStyle={connectionLineStyle}
         defaultEdgeOptions={defaultEdgeOptions}
         fitView
-        className="bg-[#0f0f0f]"
+        className="bg-[#0a0a0a]"
         proOptions={{ hideAttribution: true }}
       >
         <Background
@@ -106,35 +106,23 @@ export default function BasaltCanvas() {
         </button>
       </div>
 
-      {/* Bottom Left Zoom Controls */}
-      <div className="absolute bottom-6 left-4 z-10">
-        <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-lg p-1 flex items-center gap-1">
-          <button className="p-1.5 hover:bg-zinc-800/50 rounded transition-colors">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="text-zinc-400">
-              <path d="M8 4v8M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </button>
-          <span className="text-xs text-zinc-400 px-2">100%</span>
-          <button className="p-1.5 hover:bg-zinc-800/50 rounded transition-colors">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" className="text-zinc-400">
-              <path d="M4 8h8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-            </svg>
-          </button>
-        </div>
+      {/* Bottom Left Help Button */}
+      <div className="absolute bottom-6 left-6 z-10">
+        <button className="w-10 h-10 bg-zinc-900/80 backdrop-blur-md hover:bg-zinc-900 rounded-full flex items-center justify-center transition-colors">
+          <span className="text-sm text-white font-semibold">?</span>
+        </button>
       </div>
 
-      {/* Bottom Right Transform */}
-      <div className="absolute bottom-6 right-4 z-10">
-        <div className="bg-zinc-900/50 border border-zinc-800/50 rounded-lg px-3 py-1.5 flex items-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 text-zinc-400" />
-          <span className="text-xs text-zinc-400">Transform</span>
-        </div>
+      {/* Bottom Right Transform & Zoom */}
+      <div className="absolute bottom-6 right-6 z-10 flex items-center gap-2">
+        <span className="text-xs text-zinc-400">Transform</span>
+        <span className="text-xs text-zinc-400">100%</span>
       </div>
 
       {/* Bottom Command Bar */}
       <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 w-full max-w-2xl px-4">
         <form onSubmit={handleCommandSubmit}>
-          <div className="bg-[#1f1f1f] border border-zinc-800/70 rounded-xl shadow-2xl overflow-hidden">
+          <div className="bg-zinc-900/95 backdrop-blur-xl border border-zinc-800/40 rounded-xl shadow-2xl overflow-hidden">
             {/* Input Area */}
             <div className="flex items-start gap-3 px-4 py-3">
               <button
@@ -166,48 +154,42 @@ export default function BasaltCanvas() {
               )}
             </div>
 
-            {/* Bottom Controls */}
-            <div className="border-t border-zinc-800/50 px-4 py-2.5 flex items-center justify-between">
+            {/* Bottom Controls Row */}
+            <div className="border-t border-zinc-800/40 px-4 py-2.5 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                {/* Aspect Ratio */}
+                {/* Aspect Ratio Button */}
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800/50 rounded text-xs text-zinc-400 transition-colors"
+                  className="px-2.5 py-1 text-xs text-zinc-400 hover:text-white transition-colors"
                 >
-                  <Maximize className="w-3 h-3" />
-                  <span>4:3</span>
+                  4:3
                 </button>
 
-                {/* Model Selector */}
+                {/* Model Dropdown */}
                 <button
                   type="button"
-                  className="flex items-center gap-1.5 px-2.5 py-1 bg-zinc-900/50 hover:bg-zinc-900 border border-zinc-800/50 rounded text-xs text-zinc-400 transition-colors"
+                  className="px-2.5 py-1 text-xs text-zinc-400 hover:text-white transition-colors"
                 >
-                  <Wand2 className="w-3 h-3" />
-                  <span>Model</span>
+                  Model
                 </button>
 
                 {/* More Options */}
                 <button
                   type="button"
-                  className="p-1 hover:bg-zinc-900 rounded transition-colors"
+                  className="px-2 py-1 text-xs text-zinc-400 hover:text-white transition-colors"
                 >
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-zinc-500">
-                    <circle cx="4" cy="8" r="1" fill="currentColor"/>
-                    <circle cx="8" cy="8" r="1" fill="currentColor"/>
-                    <circle cx="12" cy="8" r="1" fill="currentColor"/>
-                  </svg>
+                  ...
                 </button>
               </div>
 
-              {/* Generate Button */}
+              {/* Send Button */}
               <button
                 type="submit"
                 disabled={!commandInput.trim() || isCreating}
-                className="px-4 py-1.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 disabled:cursor-not-allowed rounded-lg text-xs text-white font-medium transition-colors flex items-center gap-2"
+                className="w-7 h-7 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 disabled:cursor-not-allowed rounded-full flex items-center justify-center transition-colors"
               >
                 <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-                  <path d="M2 8l12-6v12L2 8z" fill="currentColor"/>
+                  <path d="M8 3v10M8 3l3 3M8 3L5 6" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </button>
             </div>

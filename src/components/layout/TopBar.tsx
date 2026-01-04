@@ -31,17 +31,17 @@ export function TopBar() {
       </div>
 
       {/* Center Tabs */}
-      <nav className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-zinc-900/50 rounded-lg p-1">
+      <nav className="absolute left-1/2 -translate-x-1/2 flex items-center gap-1 bg-zinc-900/50 rounded-full p-1">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`
-              px-4 py-1.5 rounded-md text-sm font-medium transition-all
+              px-5 py-1.5 rounded-full text-sm font-medium transition-all
               ${
                 activeTab === tab.id
-                  ? 'text-white bg-zinc-800'
-                  : 'text-zinc-400 hover:text-white'
+                  ? 'text-white bg-zinc-800/50'
+                  : 'text-zinc-500 hover:text-zinc-300'
               }
             `}
           >

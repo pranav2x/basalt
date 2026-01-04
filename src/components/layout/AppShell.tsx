@@ -10,7 +10,7 @@ interface AppShellProps {
 
 export function AppShell({ children }: AppShellProps) {
   return (
-    <div className="h-screen w-screen overflow-hidden bg-[#0f0f0f]">
+    <div className="h-screen w-screen overflow-hidden bg-[#0a0a0a]">
       {/* CSS Grid Layout */}
       <div className="h-full grid grid-rows-[60px_1fr]">
         {/* Top Bar */}
@@ -22,7 +22,7 @@ export function AppShell({ children }: AppShellProps) {
           <LeftSidebar />
 
           {/* Main Canvas Area */}
-          <main className="relative overflow-hidden bg-[#0f0f0f]">
+          <main className="relative overflow-hidden bg-[#0a0a0a]">
             {children}
           </main>
 

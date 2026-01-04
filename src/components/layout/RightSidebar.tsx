@@ -16,9 +16,9 @@ export function RightSidebar() {
   }
 
   return (
-    <aside className="w-[280px] bg-[#1a1a1a] border-l border-zinc-800/50 flex flex-col">
+    <aside className="w-[280px] bg-[#0f0f0f] border-l border-zinc-800/40 flex flex-col">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-zinc-800/50">
+      <div className="px-4 py-3 border-b border-zinc-800/40">
         <h2 className="text-xs font-semibold text-white">Properties</h2>
       </div>
 
@@ -27,7 +27,7 @@ export function RightSidebar() {
         {/* Node Type Badge */}
         <div>
           <label className="text-[10px] text-zinc-500 mb-1.5 block uppercase tracking-wider">Type</label>
-          <span className="inline-flex items-center px-2.5 py-1 rounded bg-zinc-900/50 border border-zinc-800/50 text-xs text-zinc-300">
+          <span className="inline-flex items-center px-2.5 py-1 rounded bg-zinc-900/50 border border-zinc-800/40 text-xs text-zinc-300">
             {selectedNode.type || 'default'}
           </span>
         </div>
@@ -38,7 +38,7 @@ export function RightSidebar() {
           <input
             type="text"
             defaultValue={selectedNode.data?.label || 'Untitled'}
-            className="w-full px-2.5 py-1.5 bg-zinc-900/30 border border-zinc-800/50 rounded text-xs text-white focus:outline-none focus:border-zinc-700 transition-colors"
+            className="w-full px-2.5 py-1.5 bg-zinc-900/30 border border-zinc-800/40 rounded text-xs text-white focus:outline-none focus:border-zinc-700 transition-colors"
           />
         </div>
 
@@ -52,7 +52,7 @@ export function RightSidebar() {
                 type="number"
                 value={Math.round(selectedNode.position.x)}
                 readOnly
-                className="w-full px-2.5 py-1.5 bg-zinc-900/30 border border-zinc-800/50 rounded text-xs text-white focus:outline-none"
+                className="w-full px-2.5 py-1.5 bg-zinc-900/30 border border-zinc-800/40 rounded text-xs text-white focus:outline-none"
               />
             </div>
             <div>
@@ -61,7 +61,7 @@ export function RightSidebar() {
                 type="number"
                 value={Math.round(selectedNode.position.y)}
                 readOnly
-                className="w-full px-2.5 py-1.5 bg-zinc-900/30 border border-zinc-800/50 rounded text-xs text-white focus:outline-none"
+                className="w-full px-2.5 py-1.5 bg-zinc-900/30 border border-zinc-800/40 rounded text-xs text-white focus:outline-none"
               />
             </div>
           </div>
@@ -69,7 +69,7 @@ export function RightSidebar() {
       </div>
 
       {/* Delete Button */}
-      <div className="p-4 border-t border-zinc-800/50">
+      <div className="p-4 border-t border-zinc-800/40">
         <button className="w-full px-3 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 rounded text-xs text-red-400 font-medium transition-colors flex items-center justify-center gap-2">
           <Trash2 className="w-3.5 h-3.5" />
           Delete
